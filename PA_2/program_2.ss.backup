@@ -74,14 +74,11 @@
   (lambda (lst)
     
     ; base case of the recursion
-    (if (null? lst)
-        
-      ;if the list is empty, return an empty list
-      '()
+    (if (null? lst) 
+      '() ; if the list is empty, return an empty list
       
-      ;recursive case -- processes the first element of the list using the change function, 
-                         ;then recursively processes the rest of the list
-        
+      ; recursive case -- processes the first element of the list using the change function, 
+      ;                   then recursively processes the rest of the list
       (cons (change (car lst)) (change-list (cdr lst))))))
           ;car lst: gets first element of the list lst
           ;change (car lst): calls change function to the first element
@@ -99,8 +96,7 @@
 (define closest-point
   (lambda (point lst)
     
-    ; helper function that calculates euclidean distance between two points
-    (define distance 
+    (define distance ; helper function that calculates euclidean distance between two points
       (lambda (p1 p2)
         (sqrt (+ (expt (- (car p1) (car p2)) 2)
                  (expt (- (cadr p1) (cadr p2)) 2)))))
@@ -111,24 +107,18 @@
         (if (null? lst)   ; Base Case:
             closest-point ;if lst empty (all points have been checked), return closest-point, the closest point found so far.
             
-            (let* ((current-point (car lst)) 
-               ; evaluates expressions sequentially and binds the results to variables 
-               ; The let* form is used because each step might depend on the previous one
+            (let* ((current-point (car lst)) ; evaluates expressions sequentially and binds the results to variables 
+                                                                  ; The let* form is used because each step might depend on the previous one
+                   (current-dist (distance point current-point))) ; computes the distance from point to current-point
               
-              (current-dist (distance point current-point))) 
-                 ; computes the distance from point to current-point
-              
-              (if (< current-dist closest-dist) 
-                 ; checks if the distance from point to current-point is less than the current shortest distance (closest-dist)
-                 ; if True: update closest-point to current-point and closest-dist to current-dist.
-                  
-                (closest point (cdr lst) current-point current-dist)
-                (closest point (cdr lst) closest-point closest-dist))))))
-                   ; if False: keep closest-point and closest-dist unchanged
+              (if (< current-dist closest-dist) ; checks if the distance from point to current-point is less than the current shortest distance (closest-dist)
+                  ; if True: update closest-point to current-point and closest-dist to current-dist.
+                  (closest point (cdr lst) current-point current-dist)
+                  (closest point (cdr lst) closest-point closest-dist))))))
+                  ; if False: keep closest-point and closest-dist unchanged
 
-    (closest point lst (car lst) (distance point (car lst))))) 
-       ; starts the process with the first point in the list as the initial closest-point 
-       ; the distance from point to this first point becomes the initial closest-dist
+    (closest point lst (car lst) (distance point (car lst))))) ; starts the process with the first point in the list as the initial closest-point 
+                                                               ; the distance from point to this first point becomes the initial closest-dist
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;      
 ;define add-list:

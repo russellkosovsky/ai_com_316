@@ -17,9 +17,7 @@
           (y (robot-y)))
       (display count)
       (newline)
-      
-      (draw-visited x y) ;marks visited nodes
-      
+      (draw-visited x y)
       (move-robot grid x y 0)
       (draw-moved-robot (robot-x) (robot-y))
       (if (or
