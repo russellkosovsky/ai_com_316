@@ -1,0 +1,182 @@
+(define sqr-list
+    (lambda (lst)
+      (if (null? lst)
+          '()
+          (cons (* (car lst) (car lst))
+            (sqr-list (cdr lst))))))
+
+sqr-list '(1 2 3)
+
+(sqr-list '(1 2 3))
+
+
+(define place
+  (lambda (x lst)
+    (if (null? lst)
+        (list x)
+        (place2 x (car lst) (cdr lst)))))
+
+
+(define place2
+    (lambda (x carlst cdrlst)
+      (if (< x carlst)
+          (cons x (cons carlst cdrlst))
+          (cons carlst (place x cdrlst)))))
+
+(place 3 '(1 2 4 5))
+
+(place a '(1 2 4 5))
+
+(place 'a '(1 2 4 5))
+
+(place -1 '(1 2 4 5))
+
+(place 20 '(1 2 4 5))
+
+(define change
+    (lambda (x)
+      (cond
+        ((< x 0) (* xx))
+        ((= x 0) 0)
+        (else (+ x 1)))))
+
+(change -3)
+
+(change 0)
+
+(change -4)
+
+(define change
+    (lambda (x)
+      (cond
+        ((< x 0) (* x x))
+        ((= x 0) 0)
+        (else (+ x 1)))))
+
+(change -4)
+
+(change 0)
+
+(change 7)
+
+(define change-list
+    (lambda (lst)
+      '()
+      (cons (change (car lst)) (change-list (cdr lst)))))
+
+(change-list '(-3 0 5))
+
+(define change-list
+    (lambda (lst)
+      '()
+      (cons (change (car lst)) (change-list (cdr lst)))))
+
+
+(define change-list
+  (lambda (lst)
+    (if (null? lst)
+      '()
+      (cons (change (car lst)) (change-list (cdr lst))))))
+
+(change-list '(-3 0 5))
+
+
+
+(define closest-point
+  (lambda (point lst)
+    
+    (define distance
+      (lambda (p1 p2))
+      (sqrt (+ (expt (- (car p1) (car p2)) 2)
+             (expt (- (cadr p1) (cadr p2)) 2)))))
+  (define closest
+    (lambda (point lst closest-point closest-dist)
+      (if (null? lst)
+         closest-point
+          (let* ((current-point (car lst))
+                 (current-dist (distance point current-point)))
+            (if (< current-dist closest-dist)
+                (closest point (cdr lst) current-point current-dist)
+                (closest point (cdr lst) closest-point closest-dist))))))
+  
+  (closest point lst (car lst) (distance point (car lst))))
+
+
+
+(define closest-point
+  (lambda (point lst)
+    
+    (define distance
+      (lambda (p1 p2))
+      (sqrt (+ (expt (- (car p1) (car p2)) 2)
+             (expt (- (cadr p1) (cadr p2)) 2)))))
+  (define closest
+    (lambda (point lst closest-point closest-dist)
+      (if (null? lst)
+         closest-point
+          (let* ((current-point (car lst))
+                 (current-dist (distance point current-point)))
+            (if (< current-dist closest-dist)
+                (closest-point (cdr lst) current-point current-dist)
+                (closest-point (cdr lst) closest-point closest-dist))))))
+  
+  (closest-point lst (car lst) (distance point (car lst))))
+
+(define closest-point
+  (lambda (point lst)
+
+    (define distance ; helper function that calculates euclidean distance between two points
+      (lambda (p1 p2)
+        (sqrt (+ (expt (- (car p1) (car p2)) 2)
+                 (expt (- (cadr p1) (cadr p2)) 2)))))
+
+    (define closest  ; helper function that recursively traverses the list of points to find the closest point
+      (lambda (point lst closest-point closest-dist)
+
+        (if (null? lst)   ; Base Case:
+            closest-point ;if lst empty (all points have been checked), return closest-point, the closest point found so far.
+
+            (let* ((current-point (car lst)) ; evaluates expressions sequentially and binds the results to variables
+                                                                  ; The let* form is used because each step might depend on the previous one
+                   (current-dist (distance point current-point))) ; computes the distance from point to current-point
+
+              (if (< current-dist closest-dist) ; checks if the distance from point to current-point is less than the current shortest distance (closest-dist)
+                  ; if True: update closest-point to current-point and closest-dist to current-dist.
+                  (closest point (cdr lst) current-point current-dist)
+                  (closest point (cdr lst) closest-point closest-dist))))))
+                  ; if False: keep closest-point and closest-dist unchanged
+
+    (closest point lst (car lst) (distance point (car lst))))) ; starts the process with the first point in the list as the initial closest-point
+
+(closest-point '(2 3) '((1 1) (4 4) (0 5)))
+
+(define add-list
+  (lambda (lst1 lst2)
+    (if (or (null? lst1) (null? lst2))
+        '()
+        (cons (+ (car lst1) (car lst2)) (add-list (cdr lst1) (cdr lst2))))))
+
+(add-list '(1 2 3) '(4 5 6)) ; => '(5 7 9)
+
+(define delete-lists
+  (lambda (lst)
+    (if (null? lst)
+        '()
+        (let ((first (car lst)))
+          (if (list? first)
+              (delete-lists (cdr lst))
+              (cons first (delete-lists (cdr lst))))))))
+
+(delete-lists '(1 2 (3 4) (5 (6 7)) 8 (9)))
+
+(define flatten
+  (lambda (lst)
+    (if (null? lst)
+        '()
+        (let ((first (car lst)))
+          (if (list? first)
+              (append (flatten first) (flatten (cdr lst)))
+              (cons first (flatten (cdr lst))))))))
+
+(flatten '(1 2 (3 (4 5) 6)))
+
