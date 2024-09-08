@@ -22,13 +22,14 @@
 
 
 (define num-col-row 20)                   ; grid size
-(define pause-num 100000)                 ; speed of agent
+(define pause-num 1000000)                 ; speed of agent
 (define size (floor (/ 500 num-col-row))) ; window size
 (define obstacle-density 30)
 
 (load "grid-class.ss")
 (load "grid-draw.ss")
 (load "grid-make.ss")
+;(load "grid-search_old.ss")
 (load "grid-search.ss")
 
 (define grid0 (make-grid num-col-row)) 

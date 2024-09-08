@@ -28,39 +28,65 @@
             (>= count stop-count))
          #f
        ;else
-         (search2 grid (+ count 1) stop-count)))))
+         (and
+           (set-node! grid x y visited)
+           (search2 grid (+ count 1) stop-count))))))
            
-          
+ 
+
 (define move-robot
+  ;; The change here prioritizes moving to a free (unvisited) node over a visited node.
+  ;; It checks whether the target node is free by ensuring it is not an obstacle and has not been visited.
   (lambda (grid x y count)
     (let ((dir (random 4)))
       (cond
-        ((and (= dir n) (> x 0) (< (get-node grid (- x 1) y) obstacle))
+        ((and (= dir n) (> x 0)
+              (< (get-node grid (- x 1) y) obstacle)
+              ; chgecks if node is visited
+              (not (= (get-node grid (- x 1) y) visited)))
            (set! robot (list (- x 1) y)))
-        ((and (= dir s) (< x (- num-col-row 1)) (< (get-node grid (+ x 1) y) obstacle))
+        ((and (= dir s) (< x (- num-col-row 1))
+              (< (get-node grid (+ x 1) y) obstacle)
+              (not (= (get-node grid (+ x 1) y) visited)))
            (set! robot (list (+ x 1) y)))
-        ((and (= dir w) (> y 0) (< (get-node grid x (- y 1)) obstacle))
+        ((and (= dir w) (> y 0)
+              (< (get-node grid x (- y 1)) obstacle)
+              (not (= (get-node grid x (- y 1)) visited)))
            (set! robot (list x (- y 1))))
-        ((and (= dir e) (< y (- num-col-row 1)) (< (get-node grid x (+ y 1)) obstacle))
+        ((and (= dir e) (< y (- num-col-row 1))
+              (< (get-node grid x (+ y 1)) obstacle)
+              (not (= (get-node grid x (+ y 1)) visited)))
            (set! robot (list x (+ y 1))))
         ((> count 100)
            (move-any-dir grid x y))
         (else
           (move-robot grid x y (+ count 1)))))))
 
+
+
 (define move-any-dir
+  ;; This function is a fallback that tries to move the robot in any available direction when no
+  ;; free (unvisited) node is found within a reasonable number of attempts. It still prioritizes
+  ;; free nodes, but if none are available, it allows movement to visited nodes.
   (lambda (grid x y)
     (cond
-      ((and (> x 0) (< (get-node grid (- x 1) y) obstacle))
-         (set! robot (list (- x 1) y)))  
-      ((and (< x (- num-col-row 1)) (< (get-node grid (+ x 1) y) obstacle))
+      ((and (> x 0) (< (get-node grid (- x 1) y) obstacle)
+            (not (= (get-node grid (- x 1) y) visited)))
+         (set! robot (list (- x 1) y)))
+      ((and (< x (- num-col-row 1)) (< (get-node grid (+ x 1) y) obstacle)
+            (not (= (get-node grid (+ x 1) y) visited)))
          (set! robot (list (+ x 1) y)))
-      ((and (> y 0) (< (get-node grid x (- y 1)) obstacle))
+      ((and (> y 0) (< (get-node grid x (- y 1)) obstacle)
+            (not (= (get-node grid x (- y 1)) visited)))
          (set! robot (list x (- y 1))))
-      ((and (< y (- num-col-row 1)) (< (get-node grid x (+ y 1)) obstacle))
+      ((and (< y (- num-col-row 1)) (< (get-node grid x (+ y 1)) obstacle)
+            (not (= (get-node grid x (+ y 1)) visited)))
          (set! robot (list x (+ y 1))))
       (else
         (display "no move")))))
+
+
+
 
 (define pause
   (lambda (count)
