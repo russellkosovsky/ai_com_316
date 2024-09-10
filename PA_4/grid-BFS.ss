@@ -50,14 +50,21 @@
     (display count)
     (newline)
     (expand robot)
-    (draw-moved-robot (robot-x) (robot-y))   
+    ;(draw-moved-robot (robot-x) (robot-y))   
     (draw-visited (car robot) (cadr robot))
     
     (let ((next-robot (front)))
       (cond
         [(>= count stop-count) #f]
-        [(equal? next-robot goal)(draw-path (get-path next-robot)) (draw-moved-robot (car next-robot) (cadr next-robot)) (get-path next-robot)]
-        [else (dequeue)(set! robot next-robot)(search2 grid (+ count 1) stop-count)]
+        
+        [(equal? next-robot goal)
+         (draw-path (get-path next-robot)) 
+         (draw-moved-robot (car next-robot) (cadr next-robot))
+         (get-path next-robot)]
+        
+        [else (dequeue)
+          (set! robot next-robot)
+          (search2 grid (+ count 1) stop-count)]
       )
     )
   )
