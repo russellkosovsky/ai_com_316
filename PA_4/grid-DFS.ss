@@ -47,7 +47,7 @@
 (define search2
   (lambda (grid count stop-count)
     (pause pause-num)
-    (display count)
+    ;(display count)
     (newline)
     (expand robot)
     ;(draw-moved-robot (robot-x) (robot-y))   
@@ -59,7 +59,7 @@
         
         [(equal? next-robot goal)
          (draw-path (get-path next-robot))
-         (draw-moved-robot (car next-robot) (cadr next-robot))
+         ;(draw-moved-robot (car next-robot) (cadr next-robot))
          (get-path next-robot)]
         
         [else (pop)
@@ -73,7 +73,7 @@
 
 (define get-path
   (lambda (last-node)
-    (display path-lst)
+    ;(display path-lst)
     (newline)
     (cond
       [(equal? start last-node) (list start)]
