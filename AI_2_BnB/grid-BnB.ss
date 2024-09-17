@@ -53,21 +53,22 @@
     (let ((next-robot (front)))  ;get next robot position from the front of the queue
       (cond
         [(>= count stop-count) #f]  ;stop search if stop count is reached
+        
         [(equal? next-robot goal)  ;check if the next position is the goal
-         (draw-path (get-path next-robot))  ;draw the path to the goal
-         (draw-moved-robot (car next-robot) (cadr next-robot))  ;move robot to the goal
-         (get-path next-robot)]  ;return the path
+           (draw-path (get-path next-robot))  ;draw the path to the goal
+           (draw-moved-robot (car next-robot) (cadr next-robot))  ;move robot to the goal
+           (get-path next-robot)]  ;return the path
+        
         [else  ;continue search
-         (dequeue)  ;remove the front element from the queue
-         (set! robot next-robot)  ;update the robot position
-         (search2 grid (+ count 1) stop-count)]))))  ;recursive call to continue the search
+           (dequeue)  ;remove the front element from the queue
+           (set! robot next-robot)  ;update the robot position
+           (search2 grid (+ count 1) stop-count)]))))  ;recursive call to continue the search
 
-;; calculate the distance between two points
+;; calculate distance between two points (blockwise)
 (define distance
   (lambda (node1 node2)
     (+ (abs (- (car node1) (car node2)))  ;absolute difference in x coordinates
-       (abs (- (cadr node1) (cadr node2)))))  ;absolute difference in y coordinates
-    )
+       (abs (- (cadr node1) (cadr node2))))))  ;absolute difference in y coordinates
 
 ;; calculates total cost by adding the current path length and the distance to the goal
 (define heuristic
@@ -83,16 +84,18 @@
 ;; draw the entire path from start to goal
 (define draw-path
   (lambda (path)
+    (display (car path))  ;output path
     (cond
       ((not (null? path))  ;if path not empty
-       (draw-pt-path-node (car path))  ;draw current point
-       (draw-path (cdr path))))))  ;recursively draw the rest
+         (draw-pt-path-node (car path))  ;draw current point
+         (draw-path (cdr path))))))  ;recursively draw the rest
 
 ;; get the path by following parent-child relationships from goal back to start
 (define get-path
   (lambda (last-node)
     (cond
       [(equal? start last-node) (list start)]  ;if last node is start -- return the start
+      
       [else (cons last-node (get-path (cadr (assoc last-node path-lst))))])))  ;recursively follow path back to start
 
 ;; draw each point in the path
