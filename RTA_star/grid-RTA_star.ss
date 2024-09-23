@@ -1,6 +1,7 @@
 
 (define visited '())  ;visited nodes
 (define frontier '()) ;frontier nodes
+(define stop-count 500) ;stop count
 
 ;; track and draw visited and frontier nodes during search
 (define track-and-draw
@@ -44,6 +45,17 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; calculate the heuristic for a list of points
+(define calculate-h
+  (lambda (lst)
+    (map h lst)))
+
+;; calculates blockwise distance from the current point to the goal
+(define h
+  (lambda (point)
+    (+ (abs (- (car point) (car goal)))  ;; horizontal distance
+       (abs (- (cadr point) (cadr goal))))))  ;; vertical distance
+
 ;; get the next best move for the robot
 (define get-next-robot 
   (lambda (point)
@@ -57,23 +69,19 @@
             (len (length lst0));; length of the randomized list
             (best (front)))    ;; get the best move from the front of the queue
          (cond 
-           ((= num 0)
-              (list-ref lst0 (random len))) ;; sometimes return a random move for exploration
-           (else
-              best))))))  ;; otherwise return the best move
+           ((= num 0) (list-ref lst0 (random len))) ;; sometimes return a random move for exploration
+           (else best)))))) ;; otherwise return the best move
 
-;; calculate the heuristic for a list of points
-(define calculate-h
-  (lambda (lst)
-    (map h lst)))
-
-;; calculates blockwise distance from the current point to the goal
-(define h
-  (lambda (point)
-    (+ (abs (- (car point) (car goal)))  ;; horizontal distance
-       (abs (- (cadr point) (cadr goal))))))  ;; vertical distance
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; move the robot based on the next best point
+(define search-robot
+  (lambda (grid)
+    (let ((next-robot (get-next-robot robot))) ;; get the next move for the robot
+      (set! visited (cons robot visited)) ;; add current node to visited
+      (set! frontier (adjacento robot)) ;; update frontier with adjacent nodes
+      (track-and-draw grid) ;; draw the visited and frontier nodes
+      (set! robot next-robot) ;; move the robot
+      (if (not (null? robot))
+        (draw-moved-robotx robot)))))
 
 ;; main search function that starts the search process
 (define search
@@ -83,7 +91,7 @@
 ;; recursive search function that continues until the goal is reached or stop-count is exceeded
 (define search2
   (lambda (grid count stop-count)
-    (display count) 
+    (display count)
     (newline)
     (cond 
       ((equal? robot goal)
@@ -100,13 +108,4 @@
             (pause pause-num)
             (search2 grid (+ count 1) stop-count)))))))
 
-;; move the robot based on the next best point
-(define search-robot
-  (lambda (grid)
-    (let ((next-robot (get-next-robot robot))) ;; get the next move for the robot
-      (set! visited (cons robot visited)) ;; add current node to visited
-      (set! frontier (adjacento robot)) ;; update frontier with adjacent nodes
-      (track-and-draw grid) ;; draw the visited and frontier nodes
-      (set! robot next-robot) ;; move the robot
-      (if (not (null? robot))
-        (draw-moved-robotx robot)))))
+
