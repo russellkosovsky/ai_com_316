@@ -41,7 +41,7 @@
     (search2 grid 1 stop-count)
   )
 )
-
+ 
 
 (define search2
   (lambda (grid count stop-count)
