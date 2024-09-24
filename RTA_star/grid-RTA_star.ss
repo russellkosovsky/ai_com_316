@@ -57,20 +57,36 @@
        (abs (- (cadr point) (cadr goal))))))  ;; vertical distance
 
 ;; get the next best move for the robot
+; (define get-next-robot 
+;   (lambda (point)
+;     (let* ((lst1 (cons point (adjacento point)))  ;; get adjacent points of the current position
+;            ;(lst0 (randomize lst1))  ;; randomize the list of adjacent points
+;            ;(flst (calculate-h lst0))  ;; calc the heuristic values for adjacent points
+;            (flst (calculate-h lst1))  ;; calc the heuristic values for adjacent points
+;            ;(lst (map list flst lst0)))  ;; create a list pairing heuristic values with the points
+;            (lst (map list flst lst1)))  ;; create a list pairing heuristic values with the points
+;       (set! queue '()) ;; clear the queue
+;       (enqueue lst)    ;; enqueue the new list
+;       (let (;(num (random 10))  ;; random number
+;             ;(len (length lst0));; length of the randomized list
+;             (best (front)))    ;; get the best move from the front of the queue
+;          ;(cond 
+;            ;((= num 0) (list-ref lst0 (random len))) ;; sometimes return a random move for exploration
+;            ;(else best))))) ;; otherwise return the best move
+;            (best))))) ;; return the best move
 (define get-next-robot 
   (lambda (point)
     (let* ((lst1 (cons point (adjacento point)))  ;; get adjacent points of the current position
-           (lst0 (randomize lst1))  ;; randomize the list of adjacent points
-           (flst (calculate-h lst0))  ;; calc the heuristic values for adjacent points
-           (lst (map list flst lst0)))  ;; create a list pairing heuristic values with the points
+           ;(lst0 (randomize lst1))  ;; randomize the list of adjacent points
+           ;(flst (calculate-h lst0))  ;; calc the heuristic values for adjacent points
+           (flst (calculate-h lst1))  ;; calc the heuristic values for adjacent points
+           ;(lst (map list flst lst0)))  ;; create a list pairing heuristic values with the points
+           (lst (map list flst lst1)))  ;; create a list pairing heuristic values with the points
       (set! queue '()) ;; clear the queue
       (enqueue lst)    ;; enqueue the new list
-      (let ((num (random 10))  ;; random number
-            (len (length lst0));; length of the randomized list
-            (best (front)))    ;; get the best move from the front of the queue
-         (cond 
-           ((= num 0) (list-ref lst0 (random len))) ;; sometimes return a random move for exploration
-           (else best)))))) ;; otherwise return the best move
+      ;return the best move (front of the queue)
+      (front))))
+
 
 ;; move the robot based on the next best point
 (define search-robot
