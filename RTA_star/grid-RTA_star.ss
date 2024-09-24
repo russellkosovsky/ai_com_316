@@ -56,48 +56,71 @@
     (+ (abs (- (car point) (car goal)))  ;; horizontal distance
        (abs (- (cadr point) (cadr goal))))))  ;; vertical distance
 
-;; get the next best move for the robot
-; (define get-next-robot 
-;   (lambda (point)
-;     (let* ((lst1 (cons point (adjacento point)))  ;; get adjacent points of the current position
-;            ;(lst0 (randomize lst1))  ;; randomize the list of adjacent points
-;            ;(flst (calculate-h lst0))  ;; calc the heuristic values for adjacent points
-;            (flst (calculate-h lst1))  ;; calc the heuristic values for adjacent points
-;            ;(lst (map list flst lst0)))  ;; create a list pairing heuristic values with the points
-;            (lst (map list flst lst1)))  ;; create a list pairing heuristic values with the points
-;       (set! queue '()) ;; clear the queue
-;       (enqueue lst)    ;; enqueue the new list
-;       (let (;(num (random 10))  ;; random number
-;             ;(len (length lst0));; length of the randomized list
-;             (best (front)))    ;; get the best move from the front of the queue
-;          ;(cond 
-;            ;((= num 0) (list-ref lst0 (random len))) ;; sometimes return a random move for exploration
-;            ;(else best))))) ;; otherwise return the best move
-;            (best))))) ;; return the best move
-(define get-next-robot 
+;; Total cost is just the heuristic distance since no path length is tracked
+(define heuristic
   (lambda (point)
-    (let* ((lst1 (cons point (adjacento point)))  ;; get adjacent points of the current position
-           ;(lst0 (randomize lst1))  ;; randomize the list of adjacent points
-           ;(flst (calculate-h lst0))  ;; calc the heuristic values for adjacent points
+    (h point)))  ;distance to the goal
+
+;; compare two nodes based on their heuristic value
+(define heuristic_compare
+  (lambda (node1 node2)
+    (< (heuristic node1) (heuristic node2))))
+
+;; get the next best move for the robot and move it
+(define search-robot-old
+  (lambda (grid)
+    (let* ((lst1 (cons robot (adjacento robot)))  ;; get adjacent points of the current position
            (flst (calculate-h lst1))  ;; calc the heuristic values for adjacent points
-           ;(lst (map list flst lst0)))  ;; create a list pairing heuristic values with the points
            (lst (map list flst lst1)))  ;; create a list pairing heuristic values with the points
       (set! queue '()) ;; clear the queue
       (enqueue lst)    ;; enqueue the new list
-      ;return the best move (front of the queue)
-      (front))))
+      (let ((next-robot (front)))  ;; get next robot position from the front of the queue
+        (set! visited (cons robot visited)) ;; add current node to visited
+        (set! frontier (adjacento robot)) ;; update frontier with adjacent nodes
+        (track-and-draw grid) ;; draw the visited and frontier nodes
+        (if (equal? next-robot robot) ;; check if the next position is the same as the current position
+          (begin ;; if so, remove the front element from the queue and update the robot position
+            (dequeue) ;; remove the front element from the queue
+            (set! robot (front))
+            (draw-moved-robotx robot)) ;; update the robot position
+          (begin ;; otherwise, update the robot position and draw the new position
+            ;(dequeue) ;; remove the front element from the queue
+            (set! robot next-robot)
+            (if (not (null? robot))
+              (draw-moved-robotx robot))
+          )
+        )
+      )
+    )
+  )
+)
 
 
-;; move the robot based on the next best point
 (define search-robot
   (lambda (grid)
-    (let ((next-robot (get-next-robot robot))) ;; get the next move for the robot
-      (set! visited (cons robot visited)) ;; add current node to visited
-      (set! frontier (adjacento robot)) ;; update frontier with adjacent nodes
-      (track-and-draw grid) ;; draw the visited and frontier nodes
-      (set! robot next-robot) ;; move the robot
-      (if (not (null? robot))
-        (draw-moved-robotx robot)))))
+    (let* (
+           (adj (cons robot (adjacento robot)))
+           (flst (calculate-h adj))  ;; calculate heuristic values
+           (lst1 (map (lambda (x) (if (member x visited) (+ (h x) 10) (h x))) flst))  ;; Add penalty to visited nodes
+           (lst (sort flst lst1)))  ;; create a list pairing heuristic values with the points
+      (set! queue '())  ;; clear the queue
+      (enqueue lst)    ;; enqueue the new list
+      (let ((next-robot (front)))  ;; get next robot position from the front of the queue
+        (set! visited (cons robot visited)) ;; add current node to visited
+        (set! frontier (adjacento robot)) ;; update frontier with adjacent nodes
+        (track-and-draw grid) ;; draw the visited and frontier nodes
+        (if (equal? next-robot robot) ;; check if the next position is the same as the current position
+          (begin ;; if so, remove the front element from the queue and update the robot position
+            (dequeue) ;; remove the front element from the queue
+            (set! robot (front))  ;; update the robot position
+            (draw-moved-robotx robot)) ;; draw the robot position
+          (begin ;; otherwise, update the robot position and draw the new position
+            (set! robot next-robot)
+            (if (not (null? robot))
+              (draw-moved-robotx robot))))))
+))
+
+
 
 ;; main search function that starts the search process
 (define search
