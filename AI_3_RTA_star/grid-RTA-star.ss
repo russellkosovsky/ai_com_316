@@ -1,7 +1,7 @@
 (define path-lst '())
 (define goal -1)
-(define prev-position '())  ;; Track the previous position
-(define bad-moves '())      ;; Track all "bad" moves that led to getting stuck
+(define prev-position '())  ;; track the previous position
+(define bad-moves '())      ;; track all "bad" moves that led to getting stuck
 
 (define expand
   (lambda (point)

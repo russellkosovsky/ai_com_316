@@ -12,7 +12,7 @@
 (draw-obstacles grid0)
 (define grid (convert-grid grid0))
 (load "grid-new.ss")
-(load "grid-A-star.ss")
+(load "grid-RTA-star.ss")
 (set-goal grid)
 (set-start grid)
 (draw-start)
