@@ -37,7 +37,7 @@
           (y-diff (abs (- (cadr b) (cadr c)))))
       (if (or (= b-status obstacle)
               (= c-status obstacle)
-              (> c-status free)
+              (= c-status frontier)
               (not (= (+ x-diff y-diff) 1)))
           #f
       ;else
@@ -55,12 +55,6 @@
   (lambda (block)
     (let* ((adj-lst0 (adjacent block))
            (adj-lst1 (map (lambda (z) (stepv block z)) adj-lst0)))
-      (remove-f adj-lst1))))
-
-(define adjacento
-  (lambda (block)
-    (let* ((adj-lst0 (adjacent block))
-           (adj-lst1 (map (lambda (z) (stepo block z)) adj-lst0)))
       (remove-f adj-lst1))))
 
 (define remove-f

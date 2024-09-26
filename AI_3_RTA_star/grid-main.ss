@@ -1,25 +1,22 @@
-
-(define num-col-row 30)
-(define pause-num 100000)
-(define size (floor (/ 500 num-col-row)))
+(define num-col-row 50)
+(define pause-num 1000000)
+(define size (floor (/ 700 num-col-row)))
 (define obstacle-density 20)
-
 (load "grid-class.ss")
 (load "grid-draw.ss")
 (load "grid-make.ss")
-(load "grid-priority-queue.ss")
-
+(load "grid-stack.ss")
+(load "grid-queue.ss")
+;commit test
 (define grid0 (make-grid num-col-row)) 
 (draw-obstacles grid0)
 (define grid (convert-grid grid0))
 (load "grid-new.ss")
-;(load "grid-RTA_star.ss")
-(load "updated-grid-RTA_star.ss")
-
+(load "grid-A-star.ss")
 (set-goal grid)
 (set-start grid)
 (draw-start)
 (draw-goal)
 (draw-robot)
 (show canvas)
-(search grid 20000)
+(search grid 50)
