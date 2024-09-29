@@ -18,8 +18,8 @@
             (else
                best))))))
 
-; (g-minimax (adjacento goal) 0)
-()
+ ;(g-minimax (adjacento goal) 0)
+;()
 
 (define g-minimax
   (lambda (g-adjacentnodes counter)
@@ -28,19 +28,17 @@
     	[(equal? 0 (moudlo counter)) (dequeue )];if the counter is even
     	[(equal? 1 (moudlo counter))] ; if the counter is odd
     	
-    	
-    	
     	;Once we've reached decision layer start calculating values of positions in the grid for our minimax graph
     ;else
-       ; (enqueue list(g-minimax g-adjacentnodes list)))));creating the structure of the minimax graph through recursion
+      (enqueue list(g-minimax g-adjacentnodes list)))));creating the structure of the minimax graph through recursion
     
   ;  (if counter is even dequeue max lst);Technically these will never run. Fix this if statement
  ;   (else counter is odd dequeue min lst);Decision recursion up the minimax graph
 
-;(define g-terminal ;This is the calculating terminal values function
-  ;(lambda ()
-    ;(set queue null);Important!!!! We also need to do this somewhere else because we only have one global queue. We could go around this by just using lists and using min and max.
-    ;return(list of static function numbers paired with their position)));We enqueue this when we call it.
+(define g-terminal ;This is the calculating terminal values function
+  (lambda ()
+    (set queue null);Important!!!! We also need to do this somewhere else because we only have one global queue. We could go around this by just using lists and using min and max.
+    return(list of static function numbers paired with their position)));We enqueue this when we call it.
     
 (define calculate-h-goal
   (lambda (lst)
