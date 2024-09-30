@@ -35,11 +35,20 @@
       (lambda (current-list current-depth)
         (cond
           ((= current-depth max-depth)
+            
             (cond
               ((even? current-depth) (car (list-sort heuristic-compare-min current-list)))
-              (else (car (list-sort heuristic-compare-max current-list)))))
-          (else (for-each minimax-inner (map (lambda (x) (expand-max x)) current-list) (make-list (length current-list) (+ current-depth 1)))))))
+              (else (car (list-sort heuristic-compare-max current-list)))
+            ))
+          
+          (else 
+            (for-each minimax-inner 
+              (map (lambda (x) (expand-max x)) current-list) 
+              (make-list (length current-list) (+ current-depth 1))
+          )))))
     (car (minimax-inner (list (list point goal)) 0))))
+
+
 
 (define heuristic-compare-max
   (lambda (l1 l2)
