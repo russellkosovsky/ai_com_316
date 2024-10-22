@@ -1,7 +1,7 @@
-(define num-col-row 40)
+(define num-col-row 60)
 (define pause-num 1000000)
-(define size (floor (/ 500 num-col-row)))
-(define obstacle-density 30)
+(define size (floor (/ 750 num-col-row)))
+(define obstacle-density 40)
 (define high-density 10)
 (define stable-density 50)
 

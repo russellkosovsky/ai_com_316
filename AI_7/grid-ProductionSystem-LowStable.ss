@@ -8,33 +8,31 @@
 
 (define rules 
   '(
-
-    (r0 (if (adjacent x)(obstacle x) (stable x) (height x low))
+    (r1 (if (adjacent x)(obstacle x) (stable x) (height x low))
         (delete (obstacle x) (stable x) (height x low)))
 
-
-    (r1 (if (current x) (adjacent y) (not path y) (not visited y) (not obstacle y))
+    (r2 (if (current x) (adjacent y) (not path y) (not visited y) (not obstacle y))
         (delete (current x))
         (add (path x) (delete_adjacents) (move_to y)))
 
-    (r2 (if (current x) (adjacent y) (not path y) (not visited y) (obstacle y) (height y low) (stable y))
+    (r3 (if (current x) (adjacent y) (not path y) (not visited y) (obstacle y) (height y low) (stable y))
         (delete (current x))
         (add (path x) (delete_adjacents) (move_to y)))
 
     ;(r3 (if (current x) (adjacent y) (not visited y) (not obstacle y))
-    (r3 (if (current x) (path y) (adjacent y))
+    (r4 (if (current x) (path y) (adjacent y))
         (delete (current x) (path x))
         (add (visited x) (delete_adjacents) (backtrack_to y)))
 
 
-    (r4 (if (delete_adjacents) (adjacent x))
+    (r5 (if (delete_adjacents) (adjacent x))
         (delete (adjacent x)))
-    (r5 (if (delete_adjacents))
+    (r6 (if (delete_adjacents))
         (delete (delete_adjacents)))
-    (r6 (if (move_to x) (not delete_adjacents))
+    (r7 (if (move_to x) (not delete_adjacents))
         (delete (move_to x))
         (execute (move_to x)))
-    (r7 (if (backtrack_to x) (not delete_adjacents))
+    (r8 (if (backtrack_to x) (not delete_adjacents))
         (delete (backtrack_to x))
         (execute (backtrack_to x)))
 ))
