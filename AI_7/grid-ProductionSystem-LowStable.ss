@@ -8,24 +8,25 @@
 
 (define rules 
   '(
-    
-     (r0 (if (adjacent x)(obstacle x) (stable x) (height x low))
+
+    (r0 (if (adjacent x)(obstacle x) (stable x) (height x low))
         (delete (obstacle x) (stable x) (height x low)))
-    
-    
+
+
     (r1 (if (current x) (adjacent y) (not path y) (not visited y) (not obstacle y))
         (delete (current x))
         (add (path x) (delete_adjacents) (move_to y)))
-    
+
     (r2 (if (current x) (adjacent y) (not path y) (not visited y) (obstacle y) (height y low) (stable y))
         (delete (current x))
         (add (path x) (delete_adjacents) (move_to y)))
-    
-    (r3 (if (current x) (path y) (adjacent y) )
+
+    ;(r3 (if (current x) (adjacent y) (not visited y) (not obstacle y))
+    (r3 (if (current x) (path y) (adjacent y))
         (delete (current x) (path x))
         (add (visited x) (delete_adjacents) (backtrack_to y)))
-    
-    
+
+
     (r4 (if (delete_adjacents) (adjacent x))
         (delete (adjacent x)))
     (r5 (if (delete_adjacents))
@@ -38,12 +39,11 @@
         (execute (backtrack_to x)))
 ))
 
+
 (define facts '())
 
 (define move_to
   (lambda (point)
-    (display facts)
-    (newline)
     (set! current point)
     (draw-visited (robot-x) (robot-y))
     (set! robot current)
