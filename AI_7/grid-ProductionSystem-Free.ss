@@ -12,15 +12,16 @@
         (delete (current x))
         (add (path x) (delete_adjacents) (move_to y)))
 
+
     (r2 (if (current x) (adjacent y) (not path y) (not visited y) (obstacle y) (height y low) (stable y))
         (delete (current x))
         (add (path x) (delete_adjacents) (move_to y)))
 
+
     (r3 (if (current x) (adjacent y) (not visited y) (not obstacle y))
         (delete (current x) (path x))
         (add (visited x) (delete_adjacents) (backtrack_to y)))
-
-
+    
     (r4 (if (delete_adjacents) (adjacent x))
         (delete (adjacent x)))
     (r5 (if (delete_adjacents))

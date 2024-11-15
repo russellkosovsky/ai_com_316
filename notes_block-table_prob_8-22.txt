@@ -1,0 +1,123 @@
+AI notes from 8-22
+
+On Rule Ordering
+    - Conflict resolution system
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+A, B, C, D = blocks
+
+----------------- = Table
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+current state: 
+  on(A C)
+  clear(A)
+  on(D B)
+  clear(D)
+  on(C Table)
+  on(B Table)
+
+visual representation:
+
+    A    D
+    C    B
+-----------------
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+GOALS:
+  clear(A)
+  on(A B)
+  on(B C)
+  on(D Table)
+  on(C Table)
+
+visual representation:
+    
+         A
+         B
+    D    C
+-----------------
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; FACTS
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+on(A B)
+on(B Table)
+on(C Table)
+clear(A)
+clear(C)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; RULES
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; r1: block to block
+
+if on(x y)
+  clear(z)
+  clear(x)
+
+add on(x z)
+  clear(y)
+
+delete on(x y)
+  clear(z)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; r2: from block to table 
+
+if on(x y)
+  clear(x)
+
+add clear(y)
+  on(x Table)
+
+delete on(x y)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; r3: from table to block
+
+if on(x Table)
+  clear(y)
+  clear(x)
+
+add on(x y)
+
+delete on(x Table)
+  clear(y)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+SEMANTIC NETWORKS: 
+	there are:
+	    nodes
+	    links
+	    link labels
+
+			   on
+			A ____ B
+			  - where A & B are nodes, _____ is a link and on is a link label
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

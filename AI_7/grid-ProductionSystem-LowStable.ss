@@ -8,7 +8,7 @@
 
 (define rules 
   '(
-    (r1 (if (adjacent x)(obstacle x) (stable x) (height x low))
+    (r1 (if (adjacent x) (obstacle x) (stable x) (height x low))
         (delete (obstacle x) (stable x) (height x low)))
 
     (r2 (if (current x) (adjacent y) (not path y) (not visited y) (not obstacle y))
