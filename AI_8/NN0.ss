@@ -3,6 +3,10 @@
 ;(define threshold-weights '(((.6 1 -.5) (.6 -.5 1)) 
 ;                           ((.4 1 1))))
 
+;(define threshold-weights '(((.6 1 -.5))))
+;(define threshold-weights '(((.6 -.5 1))))
+;(define threshold-weights '(((.4 1 1))))
+
 (define NN
   (lambda (lst)
     (NN2 lst threshold-weights)))
@@ -40,3 +44,13 @@
 (define g
   (lambda (x)
     (if (> x 0) 1 0)))
+
+; testing
+(display (NN '(0 0)))
+(newline)
+(display (NN '(0 1)))
+(newline)
+(display (NN '(1 0)))
+(newline)
+(display (NN '(1 1)))
+(newline)
