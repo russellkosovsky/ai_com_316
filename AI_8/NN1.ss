@@ -1,15 +1,20 @@
-(define threshold-weights '(((1.5 1 1))))
+(define and-threshold-weights '(((1.5 1 1))))
 
-; Example new threshold-weights for OR and XOR
 (define or-threshold-weights '(((0.5 1 1))))
-(define xor-threshold-weights '(((1.5 1 1) (1.5 -1 -1)) ((0.5 1 1))))
+(define xor-threshold-weights '(((0.6 1 -.5) (0.6 -.5 1)) 
+                               ((.4 1 1))))
 
 (define NN
   (lambda (lst)
-    (NN2 lst threshold-weights)))
+    ;(NN2 lst and-threshold-weights)))
+    ;(NN2 lst or-threshold-weights)))
+    (NN2 lst xor-threshold-weights)))
+    ;(NN2 lst not-xor-threshold-weights)))
 
 (define NN2
   (lambda (lst tw)
+    ;(display lst)
+    ;(newline)
     (if (null? tw)
         lst
         (let ((next-level (get-next-level lst (car tw))))
@@ -34,18 +39,22 @@
         (+ (* (car lst) (car w)) (get-activations (cdr lst) (cdr w))))))
 
 ; Replace the step function with sigmoid
-(define g
-  (lambda (x)
-    (/ 1 (+ 1 (exp (- x)))))) ; Sigmoid function
-
-
+;(define g
+ ; (lambda (x)
+  ;  (/ 1 (+ 1 (exp (- x)))))) ; Sigmoid function
 
 ; testing
+(newline)
+(newline)
+(display '(0 0))
 (display (NN '(0 0)))
 (newline)
+(display '(0 1))
 (display (NN '(0 1)))
 (newline)
+(display '(1 0))
 (display (NN '(1 0)))
 (newline)
+(display '(1 1))
 (display (NN '(1 1)))
 (newline)

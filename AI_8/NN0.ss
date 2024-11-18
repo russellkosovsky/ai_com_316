@@ -1,11 +1,10 @@
-(define threshold-weights '(((1.5 1 1))))
 
+;(define threshold-weights '(((1.5 1 1)))) ;AND
+;(define threshold-weights '(((.4 1 1))))  ;OR
 ;(define threshold-weights '(((.6 1 -.5) (.6 -.5 1)) 
-;                           ((.4 1 1))))
-
-;(define threshold-weights '(((.6 1 -.5))))
-;(define threshold-weights '(((.6 -.5 1))))
-;(define threshold-weights '(((.4 1 1))))
+ ;                          ((.4 1 1)))) ;XOR
+(define threshold-weights '(((.6 1 -.5) (.6 -.5 1))  ;XOR computation
+                           ((-.4 -1 -1))))          ;negates XOR output
 
 (define NN
   (lambda (lst)
@@ -14,7 +13,7 @@
 (define NN2
   (lambda (lst tw)
     (display lst)
-    (newline)
+    ;(newline)
     (if (null? tw)
       lst
     ;else
@@ -46,11 +45,20 @@
     (if (> x 0) 1 0)))
 
 ; testing
-(display (NN '(0 0)))
 (newline)
-(display (NN '(0 1)))
+(NN '(0 0))
+;(display (NN '(0 0)))
 (newline)
-(display (NN '(1 0)))
+;(newline)
+
+(NN '(0 1))
 (newline)
-(display (NN '(1 1)))
+;(newline)
+
+(NN '(1 0))
 (newline)
+;(newline)
+
+(NN '(1 1))
+(newline)
+;(newline)
