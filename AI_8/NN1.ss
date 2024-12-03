@@ -1,30 +1,33 @@
-(define and-threshold-weights '(((1.5 1 1))))
+;(define threshold-weights '(((10 10 10)))) ; this is for the AND function
+;(define threshold-weights '(((5 10 10)))) ; this is for the OR function
+;(define threshold-weights '(((60 100 -50) (60 -50 100)) ; this is for the XOR function
+                           ;((40 100 100))))
 
-(define or-threshold-weights '(((0.5 1 1))))
-(define xor-threshold-weights '(((0.6 1 -.5) (0.6 -.5 1)) 
-                               ((.4 1 1))))
+;(define threshold-weights '(((-10 -10 -10)))) ; this is for the NOT AND function
+;(define threshold-weights '(((-5 -10 -10)))) ; this is for the NOT OR function
+(define threshold-weights '(((60 100 -50) (60 -50 100)) ; this is for the NOT XOR function
+                           ;((-40 -100 -100))))
 
 (define NN
   (lambda (lst)
-    ;(NN2 lst and-threshold-weights)))
-    ;(NN2 lst or-threshold-weights)))
-    (NN2 lst xor-threshold-weights)))
-    ;(NN2 lst not-xor-threshold-weights)))
+    (car(NN2 lst threshold-weights))))
 
 (define NN2
   (lambda (lst tw)
-    ;(display lst)
-    ;(newline)
+    (display lst)
+    (newline)
     (if (null? tw)
-        lst
-        (let ((next-level (get-next-level lst (car tw))))
-          (NN2 next-level (cdr tw))))))
+      lst
+    ;else
+      (let ((next-level (get-next-level lst (car tw))))
+         (NN2 next-level (cdr tw))))))
 
 (define get-next-level
   (lambda (lst twl)
-    (if (null? twl)
-        '()
-        (cons (get-node lst (car twl)) (get-next-level lst (cdr twl))))))
+     (if (null? twl)
+       '()
+     ;else
+       (cons (get-node lst (car twl)) (get-next-level lst (cdr twl))))))
 
 (define get-node
   (lambda (lst twn)
@@ -35,13 +38,15 @@
 (define get-activations
   (lambda (lst w)
     (if (null? lst)
-        0
-        (+ (* (car lst) (car w)) (get-activations (cdr lst) (cdr w))))))
+       0
+    ;else
+       (+ (* (car lst) (car w)) (get-activations (cdr lst) (cdr w))))))
 
-; Replace the step function with sigmoid
-;(define g
- ; (lambda (x)
-  ;  (/ 1 (+ 1 (exp (- x)))))) ; Sigmoid function
+(define g
+  (lambda (x)
+    (/ 1 (+ 1 (exp (- x)))))) 
+
+
 
 ; testing
 (newline)

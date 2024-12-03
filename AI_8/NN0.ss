@@ -1,19 +1,21 @@
+;(define threshold-weights '(((1.5 1 1)))) ; this is for the AND function
+;(define threshold-weights '(((0.5 1 1)))) ; this is for the OR function
+;(define threshold-weights '(((.6 1 -.5) (.6 -.5 1)) ; this is for the  exclusive OR function
+;                          ((.4 1 1))))
 
-;(define threshold-weights '(((1.5 1 1)))) ;AND
-;(define threshold-weights '(((.4 1 1))))  ;OR
-;(define threshold-weights '(((.6 1 -.5) (.6 -.5 1)) 
- ;                          ((.4 1 1)))) ;XOR
-(define threshold-weights '(((.6 1 -.5) (.6 -.5 1))  ;XOR computation
-                           ((-.4 -1 -1))))          ;negates XOR output
+;(define threshold-weights '(((-1.5 -1 -1)))) ; this is for the NOT AND function
+;(define threshold-weights '(((-0.5 -1 -1)))) ; this is for the NOT OR function
+(define threshold-weights '(((.6 1 -.5) (.6 -.5 1)) ; this is for the  exclusive NOT OR function
+                          ((-.4 -1 -1))))
 
 (define NN
   (lambda (lst)
-    (NN2 lst threshold-weights)))
+    (car(NN2 lst threshold-weights))))
 
 (define NN2
   (lambda (lst tw)
     (display lst)
-    ;(newline)
+    (newline)
     (if (null? tw)
       lst
     ;else
